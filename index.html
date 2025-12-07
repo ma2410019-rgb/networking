@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Happy Birthday Mahi! 💖</title>
+<style>
+    /* Importing more vibrant fonts */
+    @import url('fonts.googleapis.com');
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #fce4ec; /* Light pink background */
+        color: #d32f2f; /* Deep red text color */
+        overflow-x: hidden;
+        position: relative;
+        scroll-behavior: smooth; /* Smooth scrolling between sections */
+    }
+
+    /* Heart background animation remains the same for romantic flair */
+    .heart-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+    .heart {
+        position: absolute;
+        width: 20px; height: 20px;
+        background-color: rgba(255, 105, 180, 0.7);
+        transform: rotate(-45deg);
+        animation: floatAndFade 10s infinite ease-in;
+    }
+    .heart::before, .heart::after {
+        content: ""; position: absolute; width: 20px; height: 20px;
+        background-color: rgba(255, 105, 180, 0.7); border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: 10px; }
+    @keyframes floatAndFade {
+        0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+        10% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-10vh) rotate(720deg); }
+    }
+    
+    /* General Section Styling */
+    section {
+        height: 100vh;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        /* Using a gradient overlay now for more depth */
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.9));
+        margin-bottom: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-family: 'Great Vibes', cursive; /* More elegant, script font */
+        font-size: 80px; /* Larger font size */
+        color: #e91e63;
+        margin-bottom: 0;
+        animation: pop 1.5s ease-in-out infinite alternate;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    @keyframes pop {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.05); }
+    }
+
+    .line {
+        font-size: 24px; /* Slightly larger text */
+        margin-top: 15px;
+        color: #4a4a4a;
+        opacity: 0; /* Hidden by default, animated in */
+        animation: fadeInText 1s forwards;
+    }
+    /* Adding delays to text animations to make the entry smooth */
+    .line:nth-child(2) { animation-delay: 0.5s; }
+    .line:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes fadeInText {
+        to { opacity: 1; }
+    }
+
+    .btn {
+        margin-top: 40px;
+        padding: 15px 40px; /* Larger buttons */
+        font-size: 22px;
+        border: none;
+        cursor: pointer;
+        border-radius: 50px;
+        background: #ff4081; /* Accent pink */
+        color: white;
+        font-weight: bold;
+        transition: 0.4s ease-in-out;
+        box-shadow: 0 6px 12px rgba(233, 30, 99, 0.3);
+    }
+    .btn:hover {
+        transform: translateY(-3px) scale(1.02);
+        background: #ff5c94;
+    }
+
+    /* Memory Game Styling (Improved visual feedback) */
+    .game-container {
+        display: grid;
+        grid-template-columns: repeat(4, 75px); /* Slightly smaller cards for better mobile fit */
+        grid-template-rows: repeat(3, 75px);
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        height: 75px;
+        width: 75px;
+        cursor: pointer;
+        perspective: 1000px; /* 3D effect */
+    }
+    .card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth flip animation */
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 10px;
+    }
+    .card.flipped .card-inner, .card.matched .card-inner {
+         transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+
+    .card-front {
+        background-color: #ffffff;
+        transform: rotateY(180deg);
+        font-size: 40px;
+    }
+
+    .card-back {
+        background-color: #e91e63; /* Deep pink card back */
+        color: white;
+        font-size: 30px;
+        border: 3px solid white;
+    }
+    
+    .card.matched .card-front {
+        background-color: #c8e6c9; /* Light green on match */
+        box-shadow: 0 0 15px #4caf50; /* Green glow effect */
+    }
+
+    #gameStatus {
+        margin-top: 25px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #e91e63;
+        animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+        from { transform: scale(1); }
+        to { transform: scale(1.05); }
+    }
+
+    /* Confetti Styling (New Feature!) */
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background-color: #ff4081;
+        opacity: 0;
+        animation: drop 3s forwards;
+    }
+
+    @keyframes drop {
+        0% {
+            transform: translateY(-10vh) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(110vh) rotate(720deg);
+            opacity: 0.5;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Heart Background Generator -->
+<div class="heart-bg" id="heart-container"></div>
+<!-- Confetti Container -->
+<div id="confetti-container"></div>
+
+<!-- PAGE 1 -->
+<section>
+    <h1>🌸 Happy Birthday Mahi! 🌸</h1>
+    <p class="line">Wishing you a day filled with joy, laughter, and wonderful memories.</p>
+    <p class="line">May this year bring you endless happiness and success.</p>
+
+    <a href="#page2"><button class="btn">Next 🎉</button></a>
+</section>
+
+<!-- PAGE 2 -->
+<section id="page2">
+    <h1 style="font-size:60px;">✨ Your Special Day ✨</h1>
+    <p class="line">Enjoy every moment, smile a little extra today.</p>
+    <p class="line">Because this day belongs only to YOU!</p>
+
+    <a href="#page3"><button class="btn">Next 💙</button></a>
+</section>
+
+<!-- PAGE 3 - The New Game Section -->
+<section id="page3">
+    <h1 style="font-size:50px;">💖 Memory Challenge for Mahi! 💖</h1>
+    <p class="line">Find all the matching emoji pairs to unlock a special surprise!</p>
+
+    <div class="game-container" id="game-board">
+        <!-- Cards will be injected here by JavaScript -->
+    </div>
+    
+    <p id="gameStatus">Pairs Found: 0 / 6</p>
+    <button class="btn" onclick="initGame()">Restart Game</button>
+</section>
+
+<!-- PAGE 4 -->
+<section id="page4">
+    <h1 style="font-size:65px;">🎊 Celebrate Yourself 🎊</h1>
+    <p class="line">Be proud, be joyful — today is your moment.</p>
+    <p class="line">Once again... Happy Birthday, Mahi! 💙</p>
+    <a href="#"><button class="btn">Top ⬆️</button></a>
+</section>
+
+<script>
+    // --- Background Animation Script ---
+    const container = document.getElementById('heart-container');
+    for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+        heart.style.opacity = Math.random();
+        heart.style.transform = `scale(${Math.random()})`;
+        container.appendChild(heart);
+    }
+
+    // --- Memory Game Script & Confetti ---
+    const emojis = ['😍', '😘', '🥳', '🎂', '🎁', '💖'];
+    const cardsArray = [...emojis, ...emojis];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let lockBoard = false;
+    const gameBoard = document.getElementById('game-board');
+    const gameStatus = document.getElementById('gameStatus');
+    const confettiContainer = document.getElementById('confetti-container');
+
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initGame() {
+        flippedCards = [];
+        matchedPairs = 0;
+        lockBoard = false;
+        gameStatus.textContent = "Pairs Found: 0 / 6";
+        gameBoard.innerHTML = '';
+        const shuffledCards = shuffle(cardsArray);
+
+        shuffledCards.forEach(emoji => {
+            const cardWrapper = document.createElement('div');
+            cardWrapper.classList.add('card');
+            cardWrapper.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-back">?</div>
+                    <div class="card-front">${emoji}</div>
+                </div>
+            `;
+            cardWrapper.addEventListener('click', () => flipCard(cardWrapper));
+            gameBoard.appendChild(cardWrapper);
+            
+            // Briefly show cards at start
+            cardWrapper.classList.add('flipped');
+            setTimeout(() => cardWrapper.classList.remove('flipped'), 800);
+        });
+    }
+
+    function flipCard(card) {
+        // Stop if board locked, card already flipped, or already matched
+        if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+        card.classList.add('flipped');
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+            lockBoard = true; // Lock board while we check
+            checkForMatch();
+        }
+    }
+
+    function checkForMatch() {
+        const [cardOne, cardTwo] = flippedCards;
+        const isMatch = cardOne.querySelector('.card-front').textContent === cardTwo.querySelector('.card-front').textContent;
+
+        isMatch ? disableCards(cardOne, cardTwo) : unFlipCards(cardOne, cardTwo);
+    }
+
+    function disableCards(cardOne, cardTwo) {
+        // Add "matched" class to visually signify permanence
+        cardOne.classList.add('matched');
+        cardTwo.classList.add('matched');
+        
+        matchedPairs++;
+        gameStatus.textContent = `Pairs Found: ${matchedPairs} / 6`;
+        resetBoard();
+
+        if (matchedPairs === emojis.length) {
+            gameStatus.textContent = "You found all pairs! Surprise Unlocked! 🎉";
+            triggerConfetti(); // Call the celebration effect
+            // Smooth scroll to the final message page after game completion
+            setTimeout(() => {
+                window.location.hash = '#page4';
+            }, 2000); 
+        }
+    }
+
+    function unFlipCards(cardOne, cardTwo) {
+        setTimeout(() => {
+            cardOne.classList.remove('flipped');
+            cardTwo.classList.remove('flipped');
+            resetBoard();
+        }, 1200); // Shorter delay for flip-back
+    }
+
+    function resetBoard() {
+        [flippedCards, lockBoard] = [[], false];
+    }
+
+    // Confetti Function
+    function triggerConfetti() {
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2 to 5 seconds
+            confettiContainer.appendChild(confetti);
+
+            // Remove confetti elements after animation finishes
+            confetti.addEventListener('animationend', () => {
+                confetti.remove();
+            });
+        }
+    }
+
+    // Initialize game on load
+    document.addEventListener('DOMContentLoaded', initGame);
+
+</script>
+
+</body>
+</html>
